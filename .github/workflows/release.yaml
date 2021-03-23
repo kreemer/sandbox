@@ -17,7 +17,6 @@ jobs:
         uses: crazy-max/ghaction-docker-meta@v1
         with:
           images: ghcr.io/kreemer/sandbox
-          tag-sha: true
           tag-semver: |
             {{version}}
             {{major}}.{{minor}}
@@ -28,4 +27,6 @@ jobs:
           echo "::group::Info"
           echo "Registered tags: ${{ steps.docker_meta.outputs.tags }}"
           echo "GitHub REF: $GITHUB_REF"
+          echo "Branch Name: ${GITHUB_REF##*/}"
+          echo "GitHub SHA: $GITHUB_SHA"
           echo "::endgroup::"
