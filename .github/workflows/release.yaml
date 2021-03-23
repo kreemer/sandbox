@@ -1,0 +1,31 @@
+name: "Release"
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: "Release docker image"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: ghcr.io/kreemer/sandbox
+          tag-sha: true
+          tag-semver: |
+            {{version}}
+            {{major}}.{{minor}}
+
+      - name: Info
+        shell: bash
+        run: |
+          echo "::group::Info"
+          echo "Registered tags: ${{ steps.docker_meta.outputs.tags }}"
+          echo "GitHub REF: ${{GITHUB_REF}}"
+          echo "::endgroup::"
