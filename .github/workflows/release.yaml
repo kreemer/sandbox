@@ -34,7 +34,7 @@ jobs:
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
         with:
-          workflow: build.yml
+          workflow: build.yaml
           commit: ${{ steps.info1.outputs.commit }}
 
       - name: Gather informations
