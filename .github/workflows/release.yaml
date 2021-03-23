@@ -67,4 +67,4 @@ jobs:
             docker tag ${IMAGE_BASENAME}@${DIGEST} ${tag}
           done <<< "${{ steps.docker_meta.outputs.tags }}"
           echo "Pushing image ${IMAGE_BASENAME} to registry"
-          docker push ${IMAGE_BASENAME}
+          docker image push --all-tags ${IMAGE_BASENAME}
