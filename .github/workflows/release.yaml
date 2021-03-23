@@ -32,6 +32,28 @@ jobs:
           echo "::group::Gather informations"
           echo "Image Tag: sha-${GITHUB_SHA::8}"
           echo "Repository: ${IMAGE_BASENAME}"
-          echo "Image to tag: ${IMAGE_BASENAME}:sha-${GITHUB_SHA::8}"
+          echo "Image to tag: ${IMAGE_BASENAME}:sha-${GITHUB_SHA::7}"
           echo "::endgroup::"
-          echo "::set-output name=image::${IMAGE_BASENAME}:sha-${GITHUB_SHA::8}"
+          echo "::set-output name=image::${IMAGE_BASENAME}:sha-${GITHUB_SHA::7}"
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: kreemer
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Release docker image
+        shell: bash
+        run: |
+          echo "::group::Tagging"
+          echo "Getting image ${{ steps.info.outputs.image }}"
+          docker pull ${{ steps.info.outputs.image }}
+          while IFS= read -r tag; do
+            echo "Tagging ${{ steps.info.outputs.image }} as $tag"
+            docker tag ${{ steps.info.outputs.image }} $tag
+          done <<< "${{ steps.docker_meta.outputs.tags }}"
+          echo "::endgroup::"
+
+          echo "Pushing image to registry"
+          docker image push --all-tags ${{ steps.info.outputs.image }}
