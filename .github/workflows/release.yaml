@@ -33,6 +33,7 @@ jobs:
           echo "Image Tag: sha-${GITHUB_SHA::8}"
           echo "Repository: ${IMAGE_BASENAME}"
           echo "Image to tag: ${IMAGE_BASENAME}:sha-${GITHUB_SHA::7}"
+          echo "Tags: ${{ steps.docker_meta.outputs.tags }}"
           echo "::endgroup::"
           echo "::set-output name=image::${IMAGE_BASENAME}:sha-${GITHUB_SHA::7}"
 
