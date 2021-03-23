@@ -61,8 +61,10 @@ jobs:
       - name: Release docker image
         shell: bash
         run: |
-          ls -lA
-          [ -f digest.txt ] || echo "::error file=docker_digest::docker_digest does not exists." && exit 1
+          if [ ! -f digest.txt ]; then
+            echo "::error file=docker_digest::docker_digest does not exists."
+            exit 1
+          fi
           DIGEST=$(cat digest.txt)
           echo "Getting image ${IMAGE_BASENAME}@${DIGEST}"
           docker pull ${IMAGE_BASENAME}@${DIGEST}
