@@ -62,8 +62,8 @@ jobs:
         shell: bash
         run: |
           ls -lA
-          # [ -f docker_digest ] || echo "::error file=docker_digest::docker_digest does not exists." && exit 1
-          DIGEST=$(cat docker_digest)
+          [ -f digest.txt ] || echo "::error file=docker_digest::docker_digest does not exists." && exit 1
+          DIGEST=$(cat digest.txt)
           echo "Getting image ${IMAGE_BASENAME}@${DIGEST}"
           docker pull ${IMAGE_BASENAME}@${DIGEST}
           while IFS= read -r tag; do
