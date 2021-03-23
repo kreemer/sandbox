@@ -24,12 +24,6 @@ jobs:
             {{version}}
             {{major}}.{{minor}}
 
-      - name: Gather informations
-        shell: bash
-        id: info
-        run: |
-          echo "::set-output name=commit::${GITHUB_SHA}"
-
       - name: Wait for build to succeed
         uses: tomchv/wait-my-workflow@v1.1.0
         id: wait-for-build
@@ -69,8 +63,8 @@ jobs:
           echo "Getting image ${IMAGE_BASENAME}@${DIGEST}"
           docker pull ${IMAGE_BASENAME}@${DIGEST}
           while IFS= read -r tag; do
-            echo "Tagging ${{ steps.info.outputs.image }} as ${IMAGE_BASENAME}${tag}"
-            docker tag ${{ steps.info.outputs.image }} ${IMAGE_BASENAME}${tag}
+            echo "Tagging ${IMAGE_BASENAME}@${DIGEST} as ${tag}"
+            docker tag ${IMAGE_BASENAME}@${DIGEST} ${tag}
           done <<< "${{ steps.docker_meta.outputs.tags }}"
           echo "Pushing image ${IMAGE_BASENAME} to registry"
           docker image push --all-tags ${IMAGE_BASENAME}
