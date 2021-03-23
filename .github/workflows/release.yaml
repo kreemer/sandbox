@@ -32,6 +32,6 @@ jobs:
           echo "::group::Gather informations"
           echo "Image Tag: sha-${GITHUB_SHA::8}"
           echo "Repository: ${IMAGE_BASENAME}"
-          echo "Image to tag: ${IMAGE_BASENAME}:sha-${GITHUB_SHA::8}
+          echo "Image to tag: ${IMAGE_BASENAME}:sha-${GITHUB_SHA::8}"
           echo "::endgroup::"
           echo "::set-output name=image::${IMAGE_BASENAME}:sha-${GITHUB_SHA::8}"
