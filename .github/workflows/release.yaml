@@ -29,7 +29,7 @@ jobs:
         id: info1
         run: |
           ls -lA
-          echo ${ GITHUB_SHA }
+          echo ${GITHUB_SHA}
           echo ${{ env.GITHUB_SHA }}
 
 
