@@ -31,11 +31,11 @@ jobs:
           echo "::set-output name=commit::${GITHUB_SHA}"
 
       - name: Wait for build to succeed
-        uses: fountainhead/action-wait-for-check@v1.0.0
+        uses: tomchv/wait-my-workflow@v1.1.0
         id: wait-for-build
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          checkName: Build
+          checkName: build
           ref: ${{ github.sha }}
 
       - name: Download artifact
