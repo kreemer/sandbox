@@ -35,7 +35,7 @@ jobs:
         id: wait-for-build
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          checkName: build
+          checkName: Build
           ref: ${{ github.sha }}
 
       - name: Download artifact
