@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
 
+
+env:
+  IMAGE_BASENAME: "ghcr.io/kreemer/sandbox"
+
 jobs:
   build:
     name: "Release docker image"
@@ -16,19 +20,18 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: ghcr.io/kreemer/sandbox
+          images: ${IMAGE_BASENAME}
           tag-semver: |
             {{version}}
             {{major}}.{{minor}}
 
-      - name: Info
+      - name: Gather informations
         shell: bash
+        id: info
         run: |
-          echo "::group::Info"
-          echo "Registered tags: ${{ steps.docker_meta.outputs.tags }}"
-          echo "GitHub REF: $GITHUB_REF"
-          echo "Branch Name: ${GITHUB_REF##*/}"
-          echo "GitHub SHA: $GITHUB_SHA"
-          echo "GitHub Short Sha: $(git rev-parse --short HEAD)"
-          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+          echo "::group::Gather informations"
+          echo "Image Tag: sha-${GITHUB_SHA::8}"
+          echo "Repository: ${IMAGE_BASENAME}"
+          echo "Image to tag: ${IMAGE_BASENAME}:sha-${GITHUB_SHA::8}
           echo "::endgroup::"
+          echo "::set-output name=image::${IMAGE_BASENAME}:sha-${GITHUB_SHA::8}"
