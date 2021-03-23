@@ -28,15 +28,14 @@ jobs:
         shell: bash
         id: info1
         run: |
-          ls -lA
-          echo ${GITHUB_SHA}
+          echo "::set-output name=commit::${GITHUB_SHA}"
 
 
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: build.yml
-          commit: ${GITHUB_SHA}
+          commit: ${{ steps.info1.outputs.commit }}
 
       - name: Gather informations
         shell: bash
