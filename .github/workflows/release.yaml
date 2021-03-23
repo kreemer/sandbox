@@ -27,5 +27,5 @@ jobs:
         run: |
           echo "::group::Info"
           echo "Registered tags: ${{ steps.docker_meta.outputs.tags }}"
-          echo "GitHub REF: ${{GITHUB_REF}}"
+          echo "GitHub REF: $GITHUB_REF"
           echo "::endgroup::"
