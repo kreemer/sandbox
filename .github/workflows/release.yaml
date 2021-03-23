@@ -20,15 +20,22 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: ${IMAGE_BASENAME}
+          images: ${{ env.IMAGE_BASENAME }}
           tag-semver: |
             {{version}}
             {{major}}.{{minor}}
+
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: build.yml
+          commit: ${{ env.GITHUB_SHA }}
 
       - name: Gather informations
         shell: bash
         id: info
         run: |
+          ls -lA
           echo "::group::Gather informations"
           echo "Image Tag: sha-${GITHUB_SHA::8}"
           echo "Repository: ${IMAGE_BASENAME}"
