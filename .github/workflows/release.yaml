@@ -1,10 +1,9 @@
 name: "Release"
 
 on:
-  push:
-    tags:
-      - 'v*'
-
+  release:
+    types:
+      - created
 
 env:
   IMAGE_BASENAME: "ghcr.io/kreemer/sandbox"
@@ -30,8 +29,10 @@ jobs:
         id: info1
         run: |
           ls -lA
+          echo ${ GITHUB_SHA }
           echo ${{ env.GITHUB_SHA }}
-          
+
+
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
         with:
