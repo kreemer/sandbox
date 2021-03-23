@@ -48,6 +48,8 @@ jobs:
         with:
           workflow: build.yaml
           commit: ${{ github.sha }}
+          name: docker_digest
+          path: .
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
