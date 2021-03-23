@@ -51,8 +51,8 @@ jobs:
           echo "Getting image ${{ steps.info.outputs.image }}"
           docker pull ${{ steps.info.outputs.image }}
           while IFS= read -r tag; do
-            echo "Tagging ${{ steps.info.outputs.image }} as $tag"
-            docker tag ${{ steps.info.outputs.image }} $tag
+            echo "Tagging ${{ steps.info.outputs.image }} as ${IMAGE_BASENAME}${tag}"
+            docker tag ${{ steps.info.outputs.image }} ${IMAGE_BASENAME}${tag}
           done <<< "${{ steps.docker_meta.outputs.tags }}"
           echo "::endgroup::"
 
