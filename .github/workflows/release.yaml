@@ -24,31 +24,18 @@ jobs:
             {{version}}
             {{major}}.{{minor}}
 
-      - name: Gather informations1
+      - name: Gather informations
         shell: bash
-        id: info1
+        id: info
         run: |
           echo "::set-output name=commit::${GITHUB_SHA}"
-
 
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: build.yaml
-          commit: ${{ steps.info1.outputs.commit }}
-
-      - name: Gather informations
-        shell: bash
-        id: info
-        run: |
-          ls -lA
-          echo "::group::Gather informations"
-          echo "Image Tag: sha-${GITHUB_SHA::8}"
-          echo "Repository: ${IMAGE_BASENAME}"
-          echo "Image to tag: ${IMAGE_BASENAME}:sha-${GITHUB_SHA::7}"
-          echo "Tags: ${{ steps.docker_meta.outputs.tags }}"
-          echo "::endgroup::"
-          echo "::set-output name=image::${IMAGE_BASENAME}:sha-${GITHUB_SHA::7}"
+          commit: ${{ steps.info.outputs.commit }}
+          name: docker_digest
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
@@ -60,14 +47,15 @@ jobs:
       - name: Release docker image
         shell: bash
         run: |
-          echo "::group::Tagging"
-          echo "Getting image ${{ steps.info.outputs.image }}"
-          docker pull ${{ steps.info.outputs.image }}
+          if [[ ! -f "docker_digest" ]]; then
+            echo "::error file=docker_digest::docker_digest does not exists."
+          fi
+          DIGEST=$(cat docker_digest)
+          echo "Getting image ${IMAGE_BASENAME}@${DIGEST}"
+          docker pull ${IMAGE_BASENAME}@${DIGEST}
           while IFS= read -r tag; do
             echo "Tagging ${{ steps.info.outputs.image }} as ${IMAGE_BASENAME}${tag}"
             docker tag ${{ steps.info.outputs.image }} ${IMAGE_BASENAME}${tag}
           done <<< "${{ steps.docker_meta.outputs.tags }}"
-          echo "::endgroup::"
-
           echo "Pushing image ${IMAGE_BASENAME} to registry"
           docker image push --all-tags ${IMAGE_BASENAME}

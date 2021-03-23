@@ -62,7 +62,7 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: docker-digest
+          name: docker_digest
           path: digest.txt
 
       - # Temp fix
