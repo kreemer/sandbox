@@ -56,5 +56,5 @@ jobs:
           done <<< "${{ steps.docker_meta.outputs.tags }}"
           echo "::endgroup::"
 
-          echo "Pushing image to registry"
-          docker image push --all-tags ${{ steps.info.outputs.image }}
+          echo "Pushing image ${IMAGE_BASENAME} to registry"
+          docker image push --all-tags ${IMAGE_BASENAME}
