@@ -6,6 +6,9 @@ on:
       - '**'
   pull_request:
 
+env:
+  IMAGE_BASENAME: "ghcr.io/kreemer/sandbox"
+
 jobs:
   build:
     name: "Build docker image"
@@ -17,7 +20,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: ghcr.io/kreemer/sandbox
+          images: ${{ env.IMAGE_BASENAME }}
           tag-sha: true
           tag-semver: |
             {{version}}
