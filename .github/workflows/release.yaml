@@ -38,6 +38,11 @@ jobs:
           checkName: build
           ref: ${{ github.sha }}
 
+      - name: Wait until artifact is ready
+        shell: bash
+        run: |
+          sleep 5s
+
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
         with:
