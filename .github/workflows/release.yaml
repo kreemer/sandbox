@@ -25,6 +25,13 @@ jobs:
             {{version}}
             {{major}}.{{minor}}
 
+      - name: Gather informations1
+        shell: bash
+        id: info1
+        run: |
+          ls -lA
+          echo ${{ env.GITHUB_SHA }}
+          
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
         with:
