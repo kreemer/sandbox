@@ -30,11 +30,19 @@ jobs:
         run: |
           echo "::set-output name=commit::${GITHUB_SHA}"
 
+      - name: Wait for build to succeed
+        uses: fountainhead/action-wait-for-check@v1.0.0
+        id: wait-for-build
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: build
+          ref: ${{ github.sha }}
+
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: build.yaml
-          commit: ${{ steps.info.outputs.commit }}
+          commit: ${{ github.sha }}
           name: docker_digest
 
       - name: Login to GitHub Container Registry
