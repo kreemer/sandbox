@@ -29,4 +29,6 @@ jobs:
           echo "GitHub REF: $GITHUB_REF"
           echo "Branch Name: ${GITHUB_REF##*/}"
           echo "GitHub SHA: $GITHUB_SHA"
+          echo "GitHub Short Sha: $(git rev-parse --short HEAD)"
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
           echo "::endgroup::"
